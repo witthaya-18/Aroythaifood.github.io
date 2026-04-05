@@ -1,8 +1,8 @@
-// import React from "react";
-// import imgs from "../../../src/assets/imgs/LOGO.ico";
-import imgs from "../../../public/menu/imgs/LOGO.ico";
+import imgs from "@/assets/menu/LOGO.ico";
 
 // import logo from ""
+// TH: ฟังก์ชันคอมโพเนนต์หน้าเข้าสู่ระบบ
+// EN: Login page component function.
 const Login = () => {
   return (
     <>

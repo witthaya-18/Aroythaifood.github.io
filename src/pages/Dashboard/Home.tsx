@@ -1,4 +1,7 @@
-import Card from "../../components/Dashboard/charts/Card";
+import Card from "@/components/Dashboard/charts/Card";
+
+// TH: ฟังก์ชันหน้า Dashboard หลัก แสดงการ์ดสรุปข้อมูล
+// EN: Main dashboard page function that shows summary cards.
 export default function Home() {
   return (
     <>

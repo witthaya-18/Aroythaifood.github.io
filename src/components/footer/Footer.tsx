@@ -1,6 +1,9 @@
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
+import smoothScrollTo from "@/utils/ScrollTo";
+// TH: ฟังก์ชันคอมโพเนนต์ footer แสดงข้อมูลติดต่อและเวลาทำการ
+// EN: Footer component function displaying contact info and business hours.
 const Footer = () => {
   return (
     // <footer className="bg-gradient-to-t from-[#d0f79e] to-[#f8f7e7] py-10 mt-8">
@@ -8,7 +11,12 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto px-4 py-2 flex flex-col md:flex-row gap-8 md:gap-16">
         <div className="flex-1">
           <div className="text-sm leading-relaxed">
-            <b className="block mb-2"> A ROY THAI FOOD</b>
+            <a href="#" className="hover:text-[#efd62e] transition-colors mb-2 hover:no-underline" onClick={(e) => {
+              // TH: ป้องกันการกระโดดลิงก์ปกติ แล้วใช้ smooth scroll แทน
+              // EN: Prevent default anchor jump and use smooth scrolling instead.
+              e.preventDefault();
+              smoothScrollTo("HOME", 800); // duration in ms
+            }}>AROY THAI</a>
           </div>
         </div>
       </div>

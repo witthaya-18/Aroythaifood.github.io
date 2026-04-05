@@ -1,20 +1,14 @@
-import menuData from "../../../public/menu/menu.json";
-import imgs from "../../../public/menu/imgs/pad_khapao.png";
+import menuData from "@/data/menu.json";
+import heroImg from "@/assets/menu/pad_khapao.png";
 
-// const sidebarMenus = [
-//   "Paii The Experience",
-//   "Set Menu",
-//   "A La Carte",
-//   "Paii Afternoon Tea",
-//   "Desserts",
-//   "Beverages",
-// ];
+// TH: ฟังก์ชันหน้าเมนูอาหารสำหรับแสดงภาพโปรโมตและรายการเมนูจากข้อมูล JSON
+// EN: Menu page function that renders hero section and menu items from JSON data.
 export default function Thaifood() {
   return (
     <>
       <div
         className="relative h-64 bg-cover bg-center flex items-center justify-center md:w-full md:h-[320px] lg:h-[420px]"
-        style={{ backgroundImage: `url(${imgs})` }}
+        style={{ backgroundImage: `url(${heroImg})` }}
       >
         {/* เบลอๆ รูปภาพ*/}
         <div className="absolute inset-0 bg-black/50" aria-hidden />

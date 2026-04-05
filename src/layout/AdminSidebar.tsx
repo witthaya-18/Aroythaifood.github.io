@@ -1,32 +1,64 @@
-import { useState } from "react";
+import { useCallback } from "react";
+import { Link, useLocation } from "react-router";
+
 import {
   FaHome,
   FaUsers,
-  FaFolderOpen,
-  FaCalendarAlt,
-  FaFileAlt,
-  FaChartPie,
+  // FaFolderOpen,
+  // FaCalendarAlt,
+  // FaFileAlt,
+  // FaChartPie,
 } from "react-icons/fa";
 
-const menu = [
-  { name: "Dashboard", icon: <FaHome /> },
-  { name: "Menus", icon: <FaUsers /> },
-  { name: "Projects", icon: <FaFolderOpen /> },
-  { name: "Calendar", icon: <FaCalendarAlt /> },
-  { name: "Documents", icon: <FaFileAlt /> },
-  { name: "Reports", icon: <FaChartPie /> },
+type NavItem = {
+  name: string;
+  icon: React.ReactNode;
+  path?: string;
+  // subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
+};
+
+const menu: NavItem[] = [
+  { icon: <FaHome />, name: "Dashboard", path: "/dashboard" },
+  { icon: <FaUsers />, name: "Menus", path: "/menu-thaifood" },
+  // { icon: <FaFolderOpen />, name: "Projects", path: "/admin-thaifood" },
+  // { icon: <FaCalendarAlt />, name: "Calendar", path: "/admin-thaifood" },
+  // { icon: <FaFileAlt />, name: "Documents", path: "/admin-thaifood" },
+  // { icon: <FaChartPie />, name: "Reports", path: "/admin-thaifood" },
 ];
 
-const AdminSidebar = ({ collapsed = false }: { collapsed?: boolean }) => {
-  const [activeMenu, setActiveMenu] = useState("Dashboard");
+// TH: ฟังก์ชันคอมโพเนนต์ sidebar ของหน้าแอดมิน พร้อมรองรับโหมดย่อและ mobile drawer
+// EN: Admin sidebar component supporting collapsed mode and mobile drawer usage.
+const AdminSidebar = ({
+  collapsed = false,
+  onNavigate,
+}: {
+  collapsed?: boolean;
+  onNavigate?: () => void;
+}) => {
+  // const [activeMenu, setActiveMenu] = useState("Dashboard");
+  const location = useLocation();
+
+  // TH: ตรวจสอบว่า path ปัจจุบันตรงกับเมนูที่เลือกหรือไม่
+  // EN: Checks whether a menu item path matches the current route.
+  const isActive = useCallback(
+    (path: string) => location.pathname === path,
+    [location.pathname]
+  );
+
+  // TH: เรียก callback หลังคลิกเมนู (ใช้ปิด sidebar บน mobile)
+  // EN: Runs post-navigation callback (used to close sidebar on mobile).
+  const handleNavigate = useCallback(() => {
+    onNavigate?.();
+  }, [onNavigate]);
+
+
   return (
     <aside
-      className={`transition-all duration-300 bg-white border-r border-gray-200 flex flex-col justify-between ${
-        collapsed ? "w-16" : "w-64"
-      } min-h-screen`}
+      className={`transition-all duration-300 bg-white border-r border-gray-200 flex flex-col justify-between ${collapsed ? "w-16 z-10" : "w-64"
+        } h-full lg:min-h-screen`}
     >
       <div>
-        <div className="flex items-center h-16 px-6">
+        <div className="hidden h-16 items-center px-6 lg:flex">
           {collapsed ? (
             <>
               <span className="text-indigo-500 text-3xl font-bold">~</span>
@@ -34,34 +66,36 @@ const AdminSidebar = ({ collapsed = false }: { collapsed?: boolean }) => {
           ) : (
             <>
               <span className="text-indigo-500 text-3xl font-bold">~</span>
-              <span className=" text-1xl font-bold px-1">A ROY THAIFOOD</span>
+              <span className=" text-1xl font-bold px-1">A ROY THAI</span>
             </>
           )}
         </div>
-        <nav className="mt-4">
+        <nav className="mt-0 lg:mt-4">
           <ul>
             {menu.map((item) => (
               <li key={item.name}>
-                <a
-                  href="#"
-                  className={`flex items-center gap-3 px-6 py-2 rounded-lg mb-1 transition-colors ${
-                    activeMenu === item.name
-                      ? "bg-indigo-50 text-indigo-700 "
+                {item.path ? (
+                  <Link
+                    to={item.path}
+                    className={`flex items-center gap-3 px-6 py-2 rounded-lg mb-1 transition-colors ${isActive(item.path)
+                      ? "bg-indigo-50 text-indigo-700"
                       : "text-gray-700 hover:bg-gray-100"
-                  }`}
-                  onClick={() => {
-                    setActiveMenu(item.name);
-                  }}
-                >
-                  {collapsed ? (
-                    <span className="text-lg">{item.icon}</span>
-                  ) : (
-                    <>
+                      }`}
+                    onClick={handleNavigate}
+                  // onClick={() => {
+                  //   setActiveMenu(item.name);
+                  // }}
+                  >
+                    {collapsed ? (
                       <span className="text-lg">{item.icon}</span>
-                      <span>{item.name}</span>
-                    </>
-                  )}
-                </a>
+                    ) : (
+                      <>
+                        <span className="text-lg">{item.icon}</span>
+                        <span>{item.name}</span>
+                      </>
+                    )}
+                  </Link>
+                ) : null}
               </li>
             ))}
           </ul>
@@ -69,8 +103,9 @@ const AdminSidebar = ({ collapsed = false }: { collapsed?: boolean }) => {
       </div>
       <div className={`px-6 mb-4`}>
         <a
-          href="#"
+          href="/"
           className={`flex items-center rounded-lg gap-3 py-2  text-gray-700 hover:bg-gray-100`}
+          onClick={handleNavigate}
         >
           {collapsed ? (
             <span className="text-lg">
